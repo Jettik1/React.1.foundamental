@@ -42,7 +42,11 @@ function App() {
       {/* <PostList posts={posts2} title="Список постов 2"/> */}
 
       <PostForm create={createPost} />
-      <PostList posts={posts} title="Список постов 1" />
+      {posts.length !== 0
+        ? <PostList remove={removePost} posts={posts} title="Список постов 1" />
+        : <div>Посты не найдены</div>
+      }
+
     </div>
   );
 }

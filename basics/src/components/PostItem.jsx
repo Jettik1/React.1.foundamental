@@ -13,7 +13,9 @@ const PostItem = (props) => { //props - входные данные
           </div>
         </div>
         <div className="post__btns">
-          <MyButton>Удалить пост</MyButton>
+          <MyButton onClick={() => props.remove(props.post)}> {/* remove прокинули на 2 уровня */}
+            Удалить пост
+          </MyButton>
         </div>
       </div>
   )
