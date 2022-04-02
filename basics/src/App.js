@@ -9,6 +9,7 @@ import MyInput from "./components/UI/input/MyInput";
 import PostForm from "./components/PostForm";
 import MySelect from "./components/UI/select/MySelect";
 import PostFiler from "./components/PostFiler";
+import MyModal from "./components/UI/MyModal/MyModal";
 
 function App() {
   const [posts, setPosts] = useState([
@@ -26,18 +27,10 @@ function App() {
     { id: 3, title: "3JS  из массива постов в пропсах", body: "Props.body" },
   ]);
 
-  const createPost = (newPost) => {
-    // колбеком создаем новый элемент массива
-    setPosts([...posts, newPost]); // разворачиваем старый массив и добавляем новый элемент
-  };
 
   const removePost = (post) => {
     setPosts(posts.filter((p) => p.id !== post.id)); // нет функции remoove, чтобы удалить нужно вернуть массив без одного поста
   };
-
-
-
-
 
 
   const [filter, setFilter] = useState({sort: '', query: ''});
@@ -54,7 +47,16 @@ function App() {
     return sortedPosts.filter(post => post.title.toLowerCase().includes(filter.query.toLowerCase()))
   },[filter.query, sortedPosts]) // Реализовали поиск постов
 
+  // MyModal
+  const [modal, setModal] = useState(false);
+  // в createPost указываем setModal(false)
 
+  // createdPost относится ко всему коду
+  const createPost = (newPost) => {
+    // колбеком создаем новый элемент массива
+    setPosts([...posts, newPost]); // разворачиваем старый массив и добавляем новый элемент
+    setModal(false)
+  };
 
   return (
     <div className="App">
@@ -64,13 +66,20 @@ function App() {
 
       {/* <PostList posts={posts2} title="Список постов 2"/> */}
 
-      <PostForm create={createPost} />
+
+
+      {/* <PostForm create={createPost} /> */}
       <hr style={{ margin: '15px 0'}}/>
       <PostFiler filter={filter} setFilter={setFilter}/>
       {sortedAndSearchedPosts.length !== 0
         ? <PostList remove={removePost} posts={sortedAndSearchedPosts} /* передаем и отфильтрованный и отсортированный массив */title="Список постов 1" />
         : <div>Посты не найдены!</div>
       }
+
+      <MyButton style={{marginTop: '30px'}} onClick={() => setModal(true)}>Создать пост</MyButton>
+      <MyModal visible={modal} setVisible={setModal}>
+        <PostForm create={createPost} />
+      </MyModal>
 
     </div>
   );
